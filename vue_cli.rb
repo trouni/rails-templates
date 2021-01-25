@@ -52,7 +52,7 @@ environment generators
 ########################################
 run 'rm -rf node_modules/ package.json yarn.lock babel.config.js config/webpack app/javascript .browserslistrc postcss.config.js'
 run 'vue create frontend --no-git'
-run 'mv ./frontend/node_modules/ ./frontend/yarn.lock ./frontend/package.json ./frontend/babel.config.js ../..'
+run 'mv ./frontend/node_modules/ ./frontend/yarn.lock ./frontend/package.json ./frontend/babel.config.js .'
 run 'mv ./frontend ./app/frontend'
 run 'yarn add -D webpack-assets-manifest'
 
