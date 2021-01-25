@@ -1,6 +1,9 @@
 # Rails templates
 
 ## Devise + Vue CLI as frontend
+
+Doesn't work yet. Errors with Webpack.
+
 ```
 rails new \
   --database postgresql \

@@ -57,7 +57,7 @@ environment generators
 gsub_file('app/views/layouts/application.html.erb', "<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>", "<%= javascript_packs_with_chunks_tag 'main', 'data-turbolinks-track': 'reload', defer: true %>")
 style = <<~HTML
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <%= stylesheet_packs_with_chunks_tag 'main', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= stylesheet_packs_with_chunks_tag 'main', media: 'all', 'data-turbolinks-track': 'reload' %>
 HTML
 gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>", style)
 
@@ -87,11 +87,11 @@ after_bundle do
 
   # Vue CLI config
   ########################################
+  # Vue app is created first thing to avoid wait time of bundle and webpacker:install
   run 'rm -rf node_modules/ package.json yarn.lock babel.config.js config/webpack app/javascript .browserslistrc postcss.config.js'
-  # run 'vue create frontend --no-git'
   run 'mv ./frontend/node_modules/ ./frontend/yarn.lock ./frontend/package.json ./frontend/babel.config.js .'
   run 'mv ./frontend ./app/frontend'
-  run 'yarn add -D webpack-assets-manifest'
+  run 'yarn add -D webpack-assets-manifest@4.0.1'
 
   gsub_file('config/webpacker.yml', 'source_path: app/javascript', 'source_path: app/frontend/src')
   gsub_file('config/webpacker.yml', 'source_entry_path: packs', "source_entry_path: ''")
