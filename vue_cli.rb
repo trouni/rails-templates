@@ -48,29 +48,6 @@ RUBY
 
 environment generators
 
-# Vue CLI
-########################################
-run 'rm -rf node_modules/ package.json yarn.lock babel.config.js config/webpack app/javascript .browserslistrc postcss.config.js'
-run 'vue create frontend --no-git'
-run 'mv ./frontend/node_modules/ ./frontend/yarn.lock ./frontend/package.json ./frontend/babel.config.js .'
-run 'mv ./frontend ./app/frontend'
-run 'yarn add -D webpack-assets-manifest'
-
-gsub_file('config/webpacker.yml', 'source_path: app/javascript', 'source_path: app/frontend/src')
-gsub_file('config/webpacker.yml', 'source_entry_path: packs', "source_entry_path: ''")
-
-run 'rm bin/webpack'
-file 'bin/webpack', <<~RUBY
-  #!/usr/bin/env ruby
-  ENV["NODE_ENV"] ||= "development"
-
-  Dir.chdir(File.expand_path("..", __dir__)) do
-    Kernel.exec(ENV, "yarn build")
-  end
-RUBY
-
-run 'curl -L https://raw.githubusercontent.com/trouni/rails-templates/master/vue.config.js > vue.config.js'
-
 # Layout
 ########################################
 gsub_file('app/views/layouts/application.html.erb', "<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>", "<%= javascript_packs_with_chunks_tag 'main', 'data-turbolinks-track': 'reload', defer: true %>")
@@ -103,6 +80,29 @@ after_bundle do
     *.swp
     .DS_Store
   TXT
+
+  # Vue CLI
+  ########################################
+  run 'rm -rf node_modules/ package.json yarn.lock babel.config.js config/webpack app/javascript .browserslistrc postcss.config.js'
+  run 'vue create frontend --no-git'
+  run 'mv ./frontend/node_modules/ ./frontend/yarn.lock ./frontend/package.json ./frontend/babel.config.js .'
+  run 'mv ./frontend ./app/frontend'
+  run 'yarn add -D webpack-assets-manifest'
+
+  gsub_file('config/webpacker.yml', 'source_path: app/javascript', 'source_path: app/frontend/src')
+  gsub_file('config/webpacker.yml', 'source_entry_path: packs', "source_entry_path: ''")
+
+  run 'rm bin/webpack'
+  file 'bin/webpack', <<~RUBY
+    #!/usr/bin/env ruby
+    ENV["NODE_ENV"] ||= "development"
+
+    Dir.chdir(File.expand_path("..", __dir__)) do
+      Kernel.exec(ENV, "yarn build")
+    end
+  RUBY
+
+  run 'curl -L https://raw.githubusercontent.com/trouni/rails-templates/master/vue.config.js > vue.config.js'
 
   # Devise install + user
   ########################################
