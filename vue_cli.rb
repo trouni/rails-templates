@@ -1,5 +1,9 @@
 run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
 
+# Create Vue CLI app
+########################################
+run 'vue create frontend --no-git'
+
 # GEMFILE
 ########################################
 inject_into_file 'Gemfile', before: 'group :development, :test do' do
@@ -81,10 +85,10 @@ after_bundle do
     .DS_Store
   TXT
 
-  # Vue CLI
+  # Vue CLI config
   ########################################
   run 'rm -rf node_modules/ package.json yarn.lock babel.config.js config/webpack app/javascript .browserslistrc postcss.config.js'
-  run 'vue create frontend --no-git'
+  # run 'vue create frontend --no-git'
   run 'mv ./frontend/node_modules/ ./frontend/yarn.lock ./frontend/package.json ./frontend/babel.config.js .'
   run 'mv ./frontend ./app/frontend'
   run 'yarn add -D webpack-assets-manifest'
