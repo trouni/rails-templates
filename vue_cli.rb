@@ -51,11 +51,9 @@ environment generators
 # Vue CLI
 ########################################
 run 'rm -rf node_modules/ package.json yarn.lock babel.config.js config/webpack app/javascript .browserslistrc postcss.config.js'
-run 'cd app'
 run 'vue create frontend --no-git'
-run 'cd frontend'
-run 'mv node_modules/ yarn.lock package.json babel.config.js ../..'
-run 'cd ../..'
+run 'mv ./frontend/node_modules/ ./frontend/yarn.lock ./frontend/package.json ./frontend/babel.config.js ../..'
+run 'mv ./frontend ./app/frontend'
 run 'yarn add -D webpack-assets-manifest'
 
 gsub_file('config/webpacker.yml', 'source_path: app/javascript', 'source_path: app/frontend/src')
